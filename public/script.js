@@ -31,9 +31,9 @@ engine.world.gravity.y = 1
 // シリンダーを追加
 const cylinder = Body.create( {
     parts: [
-        Bodies.rectangle(105, 595, 10, 800),
+        Bodies.rectangle(60, 595, 100, 800),
         Bodies.rectangle(400, 1000, 600, 10),
-        Bodies.rectangle(695, 595, 10, 800),
+        Bodies.rectangle(740, 595, 100, 800),
     ],
     isStatic: true,
 })

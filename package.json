@@ -1,0 +1,26 @@
+{
+  "name": "multi-suika",
+  "version": "1.0.0",
+  "description": "",
+  "main": "matter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takunnma5286/multi-suika.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/takunnma5286/multi-suika/issues"
+  },
+  "homepage": "https://github.com/takunnma5286/multi-suika#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "matter-js": "^0.19.0",
+    "ws": "^8.14.2"
+  }
+}

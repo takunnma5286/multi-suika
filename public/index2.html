@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Matter.js WebSocket Sync</title>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="1200"></canvas>
+  <script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const dmain = document.domain
+const ws = new WebSocket('wss://' + dmain);
+
+
+// キャンバスをクリックしたときの処理
+canvas.addEventListener('click', (event) => {
+  const x = event.clientX - canvas.getBoundingClientRect().left;
+  const y = event.clientY - canvas.getBoundingClientRect().top;
+  const radius = 20; // 円の半径
+
+  // 新しい円の情報をオブジェクトとして作成
+  const newCircle = { x, y, radius };
+
+  // 新しい円の情報をサーバーに送信
+  ws.send(JSON.stringify([newCircle]));
+
+  // クライアント側に即座に円を描画
+  //ctx.beginPath();
+  //ctx.arc(x, y, radius, 0, Math.PI * 2);
+  //ctx.fillStyle = 'blue';
+  //ctx.fill();
+  //ctx.closePath();
+});
+
+
+ws.onmessage = (event) => {
+  const bodies = JSON.parse(event.data);
+
+  // 画面をクリア
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const wallX = 100;
+    const wallY = 300;
+    const wallWidth = 200;
+    const wallHeight = 20;
+
+    // 壁を描画
+    ctx.fillStyle = 'gray'; // 壁の色を指定
+    ctx.fillRect(100, 200, 10, 750); // 壁を描画
+    ctx.fillRect(690, 200, 10, 750); // 壁を描画
+    ctx.fillRect(100, 950, 600, 10)
+
+
+  // サーバーから受信した物体の状態を描画
+  bodies.forEach((body) => {
+    ctx.beginPath();
+    ctx.arc(body.position.x, body.position.y, body.radius, 0, Math.PI * 2);
+    ctx.fillStyle = 'blue';
+    ctx.fill();
+    ctx.closePath();
+  });
+};
+
+ws.onopen = () => {
+  console.log('Connected to server');
+};
+
+
+  </script>
+</body>
+</html>
