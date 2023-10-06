@@ -7,12 +7,12 @@ const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
-const port = 80;
+const port = 3080;
 
 const engine = Engine.create({
     enableSleeping: false, // 連続衝突検出を有効にする場合は、enableSleepingを無効にする必要がある場合があります
-    positionIterations: 50, // より高い値を設定すると連続衝突検出が向上します
-    velocityIterations: 50, // より高い値を設定すると連続衝突検出が向上します
+    positionIterations: 5, // より高い値を設定すると連続衝突検出が向上します
+    velocityIterations: 5, // より高い値を設定すると連続衝突検出が向上します
 });
 
 
@@ -42,7 +42,6 @@ enn = [
 ]
 iro = enn.map((item) => item[1]);
 
-// シリンダーを追加
 const cylinder = Body.create( {
     parts: [
         Bodies.rectangle(60, 595, 100, 800),
@@ -118,7 +117,7 @@ wss.on('connection', (ws) => {
         return;
       }
 
-      //engine.world.bodies = []; // すべての物体を削除
+      // // すべての物体を削除
 
       newBodies.forEach((bodyData) => {
         if (bodyData.radius) {
@@ -147,10 +146,24 @@ wss.on('connection', (ws) => {
   });
 });
 
+app.get('/reset', (req, res) =>{
+  engine.world.bodies = []
+  const cylinder = Body.create( {
+    parts: [
+        Bodies.rectangle(60, 595, 100, 800),
+        Bodies.rectangle(400, 1000, 600, 100),
+        Bodies.rectangle(740, 595, 100, 800),
+    ],
+    isStatic: true,
+  })
+  World.add(engine.world, cylinder)
+  res.send('ok');
+});
 
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
 
 //setInterval(() => {
 //    Engine.update(engine, 10); // Matter.jsの物理シミュレーションを更新
